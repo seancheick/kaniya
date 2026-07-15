@@ -21,6 +21,12 @@ export function Footer() {
             className="flex flex-wrap gap-x-7 gap-y-2 text-sm text-ink-soft"
             aria-label="Footer"
           >
+            <a className="transition-colors hover:text-ink" href="/about">
+              Our story
+            </a>
+            <a className="transition-colors hover:text-ink" href="/#faq">
+              FAQ
+            </a>
             <a className="transition-colors hover:text-ink" href="/privacy">
               Privacy
             </a>

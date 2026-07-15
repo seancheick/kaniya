@@ -119,6 +119,21 @@
   }
 }
 
+html.fx [data-reveal],
+html.fx [data-reveal-item] {
+  opacity: 0;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee 32s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

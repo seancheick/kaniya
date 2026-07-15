@@ -3,6 +3,7 @@ import { Figtree, Fraunces } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { ScrollFx } from "@/components/fx/scroll-fx";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -38,6 +39,7 @@ export default function RootLayout({
       className={`${fraunces.variable} ${figtree.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">
+        <ScrollFx />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

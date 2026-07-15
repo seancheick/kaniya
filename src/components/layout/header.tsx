@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { site } from "@/lib/site";
 
 const nav = [
-  { href: "#boxes", label: "The boxes" },
-  { href: "#how", label: "How it works" },
+  { href: "/#boxes", label: "The boxes" },
+  { href: "/#inside", label: "What's inside" },
+  { href: "/about", label: "Our story" },
 ];
 
 export function Header() {
@@ -29,7 +30,7 @@ export function Header() {
           ))}
         </nav>
         <Button asChild className="rounded-full px-5">
-          <a href="#preorder">Preorder — ${site.preorderPriceUSD}</a>
+          <a href="/#preorder">Preorder — ${site.preorderPriceUSD}</a>
         </Button>
       </div>
     </header>
