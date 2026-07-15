@@ -1,26 +1,131 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cream: #faf5ee;
+  --cream-deep: #f1e8dc;
+  --cream-card: #fffdf8;
+  --line: #e5dacb;
+  --ink: #33302b;
+  --ink-soft: #6b655c;
+  --sage: #97a68f;
+  --sage-deep: #5f7057;
+  --terracotta: #c2704e;
+  --terracotta-deep: #a65a3d;
+  --blush: #ebd8cd;
+  --blush-ink: #8a4e33;
+
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: var(--cream-card);
+  --card-foreground: var(--ink);
+  --popover: var(--cream-card);
+  --popover-foreground: var(--ink);
+  --primary: var(--terracotta);
+  --primary-foreground: #fbefe8;
+  --secondary: var(--cream-deep);
+  --secondary-foreground: var(--ink);
+  --muted: var(--cream-deep);
+  --muted-foreground: var(--ink-soft);
+  --accent: var(--blush);
+  --accent-foreground: var(--blush-ink);
+  --destructive: #b3392e;
+  --destructive-foreground: #fdf1ee;
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--terracotta);
+  --radius: 0.75rem;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-cream: var(--cream);
+  --color-cream-deep: var(--cream-deep);
+  --color-cream-card: var(--cream-card);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-sage: var(--sage);
+  --color-sage-deep: var(--sage-deep);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-deep: var(--terracotta-deep);
+  --color-blush: var(--blush);
+  --color-blush-ink: var(--blush-ink);
+
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 6px);
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@utility text-display {
+  font-size: clamp(2.75rem, 1.9rem + 3.6vw, 5.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+@utility text-headline {
+  font-size: clamp(1.9rem, 1.45rem + 1.9vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: -0.012em;
+}
+
+@utility eyebrow {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--terracotta);
+    color: var(--primary-foreground);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
