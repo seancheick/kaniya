@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { MatchQuiz } from "@/components/quiz/match-quiz";
+import { WaitlistForm } from "@/components/waitlist-form";
 import { site } from "@/lib/site";
 
 export function PreorderCta() {
@@ -19,24 +19,22 @@ export function PreorderCta() {
           One-time box, ${site.preorderPriceUSD}, refundable any time before it ships.
           Checkout opens on this page within days — an email reserves your spot right now.
         </p>
-        <div className="mt-9 flex flex-wrap items-center gap-6" data-reveal>
-          <Button asChild size="lg" className="rounded-full px-7 text-base">
-            <a
-              href={`mailto:${site.email}?subject=${encodeURIComponent(
-                "Preorder list: Pregnancy Comfort Box",
-              )}`}
-            >
-              Get launch-day access
-            </a>
-          </Button>
-          <MatchQuiz>
-            <button
-              type="button"
-              className="text-sm font-medium text-sage-deep transition-colors hover:text-ink"
-            >
-              Not sure which box? Find yours →
-            </button>
-          </MatchQuiz>
+        <div className="mt-9" data-reveal>
+          <WaitlistForm
+            boxInterest="pregnancy_comfort"
+            source="preorder_cta"
+            cta="Get launch-day access"
+          />
+          <div className="mt-5">
+            <MatchQuiz>
+              <button
+                type="button"
+                className="text-sm font-medium text-sage-deep transition-colors hover:text-ink"
+              >
+                Not sure which box? Find yours →
+              </button>
+            </MatchQuiz>
+          </div>
         </div>
       </div>
     </section>

@@ -87,14 +87,14 @@ export const lineup: {
   {
     name: "Balanced Blood Sugar Box",
     status: "waitlist",
-    statusLabel: "Waitlist opening",
+    statusLabel: "On the ballot",
     blurb:
       "Protein-forward, fiber-rich, lower-added-sugar picks that still feel like treats.",
   },
   {
     name: "Heart Wellness Box",
     status: "waitlist",
-    statusLabel: "Waitlist opening",
+    statusLabel: "On the ballot",
     blurb: "Lower-sodium crunch, good fats, and better sweets — chosen with care.",
   },
 ];

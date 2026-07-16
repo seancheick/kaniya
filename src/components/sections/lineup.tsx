@@ -22,18 +22,27 @@ export function Lineup() {
                 <h3 className="font-display text-2xl text-ink">{box.name}</h3>
                 <p className="mt-1 max-w-[52ch] text-sm text-ink-soft">{box.blurb}</p>
               </div>
-              <span
-                className={
-                  box.status === "preorder"
-                    ? "text-sm font-medium text-terracotta-deep"
-                    : "text-sm font-medium text-sage-deep"
-                }
-              >
-                {box.statusLabel}
-              </span>
+              {box.status === "preorder" ? (
+                <span className="text-sm font-medium text-terracotta-deep">
+                  {box.statusLabel}
+                </span>
+              ) : (
+                <a
+                  href="#vote"
+                  className="text-sm font-medium text-sage-deep transition-colors hover:text-ink"
+                >
+                  {box.statusLabel} →
+                </a>
+              )}
             </div>
           ))}
         </div>
+        <p className="mt-6 text-sm text-ink-soft" data-reveal>
+          Plus GLP-1, Menopause, and Postpartum on the{" "}
+          <a href="#vote" className="font-medium text-sage-deep transition-colors hover:text-ink">
+            live ballot ↓
+          </a>
+        </p>
       </div>
     </section>
   );

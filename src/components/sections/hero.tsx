@@ -11,6 +11,14 @@ import { site } from "@/lib/site";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
+const ROTATOR_WORDS = [
+  "every trimester.",
+  "blood-sugar days.",
+  "your heart.",
+  "the GLP-1 shift.",
+  "every craving.",
+];
+
 const chips = [
   { label: "Ginger chews", className: "left-[-8%] top-[12%]", speed: "1.4" },
   { label: "Freeze-dried strawberries", className: "right-[-6%] top-[30%]", speed: "0.9" },
@@ -26,7 +34,7 @@ export function Hero() {
       const mm = gsap.matchMedia();
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const split = new SplitText(".hero-title", { type: "lines", mask: "lines" });
+        const split = new SplitText(".hero-line1", { type: "lines", mask: "lines" });
         const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
         tl.from(".hero-eyebrow", { autoAlpha: 0, y: 14, duration: 0.6 }, 0.1)
           .from(
@@ -39,13 +47,28 @@ export function Hero() {
             },
             0.15,
           )
+          .from(".hero-rotator", { autoAlpha: 0, y: 24, duration: 0.8 }, "-=0.7")
           .from(
             [".hero-sub", ".hero-actions"],
             { autoAlpha: 0, y: 18, duration: 0.7, stagger: 0.12 },
-            "-=0.6",
+            "-=0.55",
           )
           .from(".hero-visual", { autoAlpha: 0, y: 30, scale: 0.97, duration: 0.9 }, "-=0.65")
           .from(".hero-chip", { autoAlpha: 0, y: 16, stagger: 0.08, duration: 0.5 }, "-=0.5");
+
+        const words = gsap.utils.toArray<HTMLElement>(".rotator-word");
+        gsap.set(words, { yPercent: (i) => (i ? 110 : 0) });
+        const loop = gsap.timeline({
+          repeat: -1,
+          delay: 2.4,
+          defaults: { duration: 0.65, ease: "power3.inOut" },
+        });
+        words.forEach((word, i) => {
+          const next = words[(i + 1) % words.length];
+          loop
+            .to(word, { yPercent: -110 }, "+=1.7")
+            .fromTo(next, { yPercent: 110 }, { yPercent: 0 }, "<");
+        });
 
         gsap.utils.toArray<HTMLElement>(".hero-chip").forEach((chip, i) => {
           gsap.to(chip, {
@@ -83,12 +106,20 @@ export function Hero() {
       <div className="mx-auto grid max-w-6xl gap-16 px-6 pb-24 pt-14 sm:pt-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:pb-32 lg:pt-24">
         <div>
           <p className="hero-eyebrow eyebrow">Snack boxes with a why</p>
-          <h1 className="hero-title font-display text-display mt-5 text-ink">
-            Comfort, curated for <em className="text-terracotta-deep">every trimester</em>.
+          <h1 className="font-display text-display mt-5 text-ink">
+            <span className="hero-line1 block">Comfort, curated for</span>
+            <span className="hero-rotator relative block h-[1.22em] overflow-hidden text-terracotta-deep">
+              {ROTATOR_WORDS.map((word) => (
+                <em key={word} className="rotator-word absolute left-0 top-0 whitespace-nowrap">
+                  {word}
+                </em>
+              ))}
+            </span>
           </h1>
           <p className="hero-sub mt-6 max-w-[46ch] text-lg leading-relaxed text-ink-soft">
-            Twelve gentle, protein-smart snacks — chosen around how you actually feel this
-            week, not a generic grocery aisle. No label anxiety. Just open the box.
+            Condition-aware snack boxes, packed around how you actually feel — starting
+            with pregnancy, with the next boxes chosen by public vote. No label anxiety.
+            Just open the box.
           </p>
           <div className="hero-actions mt-9 flex flex-wrap items-center gap-6">
             <Button asChild size="lg" className="rounded-full px-7 text-base">
@@ -132,7 +163,7 @@ export function Hero() {
             <span
               key={chip.label}
               data-speed={chip.speed}
-              className={`hero-chip absolute hidden items-center gap-2 rounded-full border border-border bg-cream-card px-4 py-2 text-xs font-medium text-ink shadow-none sm:inline-flex ${chip.className}`}
+              className={`hero-chip absolute hidden items-center gap-2 rounded-full border border-border bg-cream-card px-4 py-2 text-xs font-medium text-ink sm:inline-flex ${chip.className}`}
             >
               <span className="size-1.5 rounded-full bg-sage-deep" aria-hidden />
               {chip.label}

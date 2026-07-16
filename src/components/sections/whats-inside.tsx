@@ -85,8 +85,9 @@ export function WhatsInside() {
           ))}
         </div>
         <p className="mt-6 text-xs text-ink-soft/70" data-reveal>
-          First-run lineup — items rotate batch to batch, and allergy answers swap items
-          before packing. Everything ships sealed in its original packaging.
+          A sample dozen from the first run — your box flexes to your quiz answers, and
+          contents rotate batch to batch. Everything ships sealed in its original
+          packaging.
         </p>
       </div>
     </section>

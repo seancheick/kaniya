@@ -28,8 +28,9 @@ export function Gift() {
             The gift that says: <em>I did the reading.</em>
           </h2>
           <p className="mt-4 max-w-[42ch] leading-relaxed text-cream/85">
-            Partners, sisters, best friends — send a box that feels like care, not
-            homework. Add a note and we&rsquo;ll tuck it in with the cards.
+            Partners, sisters, best friends — whatever they&rsquo;re navigating:
+            pregnancy, blood sugar, heart health, GLP-1, menopause. Tell the quiz who
+            it&rsquo;s for and we pack for them. Add a note; it rides along with the cards.
           </p>
           <a
             href="#preorder"

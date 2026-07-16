@@ -17,7 +17,9 @@ export function ScrollFx() {
     mm.add("(prefers-reduced-motion: no-preference)", () => {
       document.documentElement.classList.add("fx");
 
-      const lenis = new Lenis({ autoRaf: false });
+      // anchors:true = hash links smooth-scroll through the page, so scroll reveals
+      // fire naturally instead of landing on un-revealed (invisible) sections.
+      const lenis = new Lenis({ autoRaf: false, anchors: true });
       lenis.on("scroll", ScrollTrigger.update);
       const raf = (time: number) => lenis.raf(time * 1000);
       gsap.ticker.add(raf);
