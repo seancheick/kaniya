@@ -18,6 +18,7 @@ Code mirror: every value here lives in [`src/app/globals.css`](src/app/globals.c
 ## 2. Wordmark
 
 - Text wordmark only (for now): **Keniya** set in Fraunces, normal weight, tight tracking, followed by a terracotta period → `Keniya.`
+- Pronounced *keh-NEE-yah*. The brand spelling is the Latin-alphabet form of **Kɛnɛya**; use *kɛnɛya* (lowercase, italic, with the ɛ characters) only when telling the origin story — never as the wordmark.
 - The period is the brand mark: always terracotta `#C2704E`, never another color.
 - Never set the wordmark in Figtree, all-caps, or bold.
 - Clear space: at least the height of the "K" on all sides.

@@ -30,8 +30,9 @@ export default function AboutPage() {
         </p>
         <p data-reveal>
           The name comes from <em>kɛnɛya</em> — &ldquo;health&rdquo; in Dioula, the
-          language of my family&rsquo;s roots in West Africa. Health there is something you
-          wish on people you love. That&rsquo;s the spirit every box ships with.
+          language of my family&rsquo;s roots in West Africa; Keniya is simply how we
+          write it so everyone can say it. Health there is something you wish on people
+          you love. That&rsquo;s the spirit every box ships with.
         </p>
         <p data-reveal>
           I also live with type 1 diabetes, which means I&rsquo;ve read nutrition labels

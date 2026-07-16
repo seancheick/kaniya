@@ -13,8 +13,8 @@ export function Footer() {
               Keniya<span className="text-terracotta">.</span>
             </p>
             <p className="mt-2 max-w-[44ch] text-sm text-ink-soft">
-              From <em>kɛnɛya</em> — &ldquo;health&rdquo; in Dioula. Curated with
-              PharmaGuide ingredient intelligence.
+              How we write <em>kɛnɛya</em> — &ldquo;health&rdquo; in Dioula. Curated
+              with PharmaGuide ingredient intelligence.
             </p>
           </div>
           <nav
