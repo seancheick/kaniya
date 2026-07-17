@@ -12,41 +12,44 @@ const schema = z.object({
 
 export type CheckoutResult =
   | { ok: true; url: string }
-  | { ok: false; message: string; needsEmail?: boolean };
+  | { ok: false; message: string; needsEmail?: boolean; code?: string };
 
 export async function startCheckout(input: {
   boxSlug: string;
 }): Promise<CheckoutResult> {
   const parsed = schema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, message: "Pick a box to preorder." };
+    return { ok: false, message: "Pick a box to preorder.", code: "bad_box" };
   }
 
   const box = boxes.find((b) => b.slug === parsed.data.boxSlug);
   if (!box) {
-    return { ok: false, message: "That box isn’t available." };
+    return { ok: false, message: "That box isn’t available.", code: "missing_box" };
   }
 
   if (!isCheckoutConfigured()) {
+    console.error("checkout: STRIPE_SECRET_KEY missing or invalid on this environment");
     return {
       ok: false,
       needsEmail: true,
+      code: "no_stripe_key",
       message:
-        "Secure checkout is connecting — leave your email to hold a founding spot, or try again in a moment.",
+        "Secure checkout isn’t connected on this server yet — leave your email to hold a founding spot.",
     };
   }
 
-  const priceId = priceIdForBox(box.slug);
   const stripe = getStripe();
   if (!stripe) {
     return {
       ok: false,
       needsEmail: true,
+      code: "no_stripe_client",
       message: "Checkout isn’t ready yet — hold your spot with email.",
     };
   }
 
   const base = site.url.replace(/\/$/, "");
+  const priceId = priceIdForBox(box.slug);
 
   try {
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = priceId
@@ -60,7 +63,6 @@ export async function startCheckout(input: {
               product_data: {
                 name: `${box.name} (Founding preorder)`,
                 description: `${site.snackCount} snacks · Free shipping · Ships ${site.shipWindow} (est.) · Refundable before ship`,
-                metadata: { box_slug: box.slug },
               },
             },
           },
@@ -72,6 +74,8 @@ export async function startCheckout(input: {
       success_url: `${base}/thanks?session_id={CHECKOUT_SESSION_ID}&box=${box.slug}`,
       cancel_url: `${base}/#boxes`,
       shipping_address_collection: { allowed_countries: ["US"] },
+      phone_number_collection: { enabled: false },
+      billing_address_collection: "auto",
       custom_fields: [
         {
           key: "gift_note",
@@ -89,16 +93,28 @@ export async function startCheckout(input: {
     });
 
     if (!session.url) {
-      return { ok: false, message: "Couldn’t start checkout — try again." };
+      return {
+        ok: false,
+        message: "Couldn’t start checkout — try again.",
+        code: "no_session_url",
+      };
     }
     return { ok: true, url: session.url };
   } catch (err) {
-    console.error("stripe checkout failed", err);
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("stripe checkout failed", msg);
+    // Surface a useful hint without leaking secrets
+    const safe =
+      msg.includes("Invalid API Key") || msg.includes("api_key")
+        ? "Stripe key rejected — we need to refresh the secret on the server."
+        : msg.includes("No such price")
+          ? "That price isn’t set up in Stripe yet."
+          : "Checkout hiccuped — hold your founding spot with email and we’ll follow up.";
     return {
       ok: false,
       needsEmail: true,
-      message:
-        "Checkout hiccuped — hold your founding spot with email and we’ll follow up.",
+      code: "stripe_error",
+      message: safe,
     };
   }
 }

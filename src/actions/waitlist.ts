@@ -24,6 +24,8 @@ export async function joinWaitlist(
   }
   const d = parsed.data;
   const email = d.email.trim().toLowerCase();
+
+  let dbOk = false;
   const { error } = await supabase.from("waitlist").insert({
     email,
     box_interest: d.boxInterest,
@@ -32,27 +34,62 @@ export async function joinWaitlist(
     quiz_allergies: d.quizAllergies ?? null,
     quiz_craving: d.quizCraving ?? null,
   });
+
   if (error) {
     if (error.code === "23505") {
-      return { ok: true, message: "You're already on this list — you're set." };
+      // Already on list — still success
+      dbOk = true;
+    } else {
+      // Table missing / RLS / network — don't block the customer; capture via email
+      console.error("waitlist insert failed", error.code, error.message);
+      dbOk = false;
     }
-    console.error("waitlist insert failed", error.code, error.message);
-    return { ok: false, message: "Something hiccuped — try again in a second." };
+  } else {
+    dbOk = true;
   }
 
-  // Email is best-effort — never fail the waitlist join if Resend hiccups
   const mail = await sendWaitlistConfirmEmail({
     to: email,
     boxInterest: d.boxInterest,
     quizWho: d.quizWho,
     quizCraving: d.quizCraving,
   });
-  if (!mail.ok) {
-    console.error("waitlist confirm email skipped/failed", mail.error);
+
+  // Also notify founder so no signup is lost if DB is down
+  if (!dbOk) {
+    try {
+      const { getResend } = await import("@/lib/resend");
+      const { env } = await import("@/lib/env");
+      await getResend().emails.send({
+        from: env.RESEND_FROM_EMAIL,
+        to: "hello@keniyahealth.com",
+        subject: `[Keniya waitlist] ${email} · ${d.boxInterest}`,
+        text: [
+          `Email: ${email}`,
+          `Box: ${d.boxInterest}`,
+          `Source: ${d.source}`,
+          `Who: ${d.quizWho ?? "—"}`,
+          `Craving: ${d.quizCraving ?? "—"}`,
+          `Allergies: ${(d.quizAllergies ?? []).join(", ") || "—"}`,
+          `DB insert failed — saved via email only.`,
+        ].join("\n"),
+      });
+    } catch (notifyErr) {
+      console.error("founder notify failed", notifyErr);
+      // If both DB and founder notify fail, only then fail the user
+      if (!mail.ok) {
+        return {
+          ok: false,
+          message: "Something hiccuped — email hello@keniyahealth.com and we’ll add you by hand.",
+        };
+      }
+    }
   }
 
-  return { ok: true, message: "You're on the list — check your inbox for a confirmation." };
+  return {
+    ok: true,
+    message: mail.ok
+      ? "You're on the list — check your inbox for a confirmation."
+      : "You're on the list — we'll be in touch soon.",
+  };
 }
-
-// Voting moved to social media — the votes table stays in Supabase for later
-// polls, but the site no longer writes to it. (Removed castVote; see git history.)

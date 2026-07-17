@@ -8,6 +8,21 @@ import { site } from "@/lib/site";
 import type { Box } from "@/lib/box";
 import { cn } from "@/lib/utils";
 
+async function openCheckout(boxSlug: string) {
+  // Prefer server action; fall back to API route if the action throws
+  try {
+    return await startCheckout({ boxSlug });
+  } catch (err) {
+    console.error("startCheckout action threw", err);
+    const res = await fetch("/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ boxSlug }),
+    });
+    return (await res.json()) as Awaited<ReturnType<typeof startCheckout>>;
+  }
+}
+
 export function BuyButton({
   box,
   size = "lg",
@@ -25,9 +40,7 @@ export function BuyButton({
   const [error, setError] = useState<string | null>(null);
   const [showEmail, setShowEmail] = useState(false);
 
-  const cta =
-    label ??
-    `Preorder — $${site.preorderPriceUSD}`;
+  const cta = label ?? `Preorder — $${site.preorderPriceUSD}`;
 
   return (
     <div className={cn("w-full max-w-md", className)}>
@@ -39,13 +52,19 @@ export function BuyButton({
         onClick={() => {
           setError(null);
           startTransition(async () => {
-            const res = await startCheckout({ boxSlug: box.slug });
-            if (res.ok) {
-              window.location.href = res.url;
-              return;
+            try {
+              const res = await openCheckout(box.slug);
+              if (res.ok) {
+                window.location.href = res.url;
+                return;
+              }
+              setError(res.message);
+              if (res.needsEmail && showFallbackEmail) setShowEmail(true);
+            } catch (err) {
+              console.error(err);
+              setError("Couldn’t reach checkout — try again or hold your spot below.");
+              if (showFallbackEmail) setShowEmail(true);
             }
-            setError(res.message);
-            if (res.needsEmail && showFallbackEmail) setShowEmail(true);
           });
         }}
       >
@@ -55,14 +74,17 @@ export function BuyButton({
         One-time · free shipping · refundable before ship · only{" "}
         {site.firstRunPerBox} of each box
       </p>
-      {error && !showEmail && (
-        <p className="mt-2 text-sm text-terracotta-deep">{error}</p>
+      {error && (
+        <p className="mt-2 text-sm text-terracotta-deep" role="alert">
+          {error}
+        </p>
       )}
       {showEmail && (
         <div className="mt-4 rounded-2xl border border-border bg-cream-card p-4">
           <p className="mb-3 text-sm text-ink-soft">
-            Hold your founding spot for the <strong className="text-ink">{box.shortName}</strong>{" "}
-            box — we’ll email you the moment payment is confirmed live.
+            Hold your founding spot for the{" "}
+            <strong className="text-ink">{box.shortName}</strong> box — we’ll email you
+            the moment payment is confirmed live.
           </p>
           <WaitlistForm
             boxInterest={box.slug}

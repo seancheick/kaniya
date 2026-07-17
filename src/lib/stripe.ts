@@ -1,18 +1,25 @@
 import Stripe from "stripe";
 
-let stripe: Stripe | null = null;
+let stripe: Stripe | null | undefined;
 
-export function getStripe(): Stripe | null {
-  const key = process.env.STRIPE_SECRET_KEY;
-  if (!key) return null;
-  if (!stripe) {
-    stripe = new Stripe(key);
-  }
-  return stripe;
+function secretKey(): string {
+  return (process.env.STRIPE_SECRET_KEY ?? "").trim();
 }
 
 export function isCheckoutConfigured(): boolean {
-  return Boolean(process.env.STRIPE_SECRET_KEY);
+  const k = secretKey();
+  return k.startsWith("sk_live_") || k.startsWith("sk_test_");
+}
+
+export function getStripe(): Stripe | null {
+  if (stripe !== undefined) return stripe;
+  const key = secretKey();
+  if (!key.startsWith("sk_live_") && !key.startsWith("sk_test_")) {
+    stripe = null;
+    return null;
+  }
+  stripe = new Stripe(key);
+  return stripe;
 }
 
 /** Map box slug → Stripe Price ID (one-time). Create products in Stripe Dashboard. */
@@ -22,5 +29,6 @@ export function priceIdForBox(slug: string): string | null {
     blood_sugar: process.env.STRIPE_PRICE_BLOOD_SUGAR_BOX,
     heart: process.env.STRIPE_PRICE_HEART_BOX,
   };
-  return map[slug] || null;
+  const id = (map[slug] ?? "").trim();
+  return id || null;
 }
