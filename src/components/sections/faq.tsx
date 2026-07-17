@@ -17,7 +17,11 @@ export const faqs = [
   },
   {
     q: "When and where do boxes ship?",
-    a: `The first release ships in an estimated window of ${site.shipWindow}, to US addresses. In serious summer heat we may hold chocolate-containing boxes a few days or pack accordingly — we'll email you either way. If timing slips, you'll hear from us before you have to ask.`,
+    a: `The first release ships in an estimated window of ${site.shipWindow}, to US addresses. ${site.freeShippingLabel} on every founding preorder. In serious summer heat we may hold chocolate-containing boxes a few days or pack accordingly — we'll email you either way. If timing slips, you'll hear from us before you have to ask.`,
+  },
+  {
+    q: "Which boxes can I preorder?",
+    a: "All three founding boxes are open for preorder: Pregnancy Comfort, Balanced Blood Sugar, and Heart Wellness — $47 each, fifty of each box, free shipping, refundable before ship. Later lines (GLP-1, menopause, postpartum) start as waitlists until demand is clear.",
   },
   {
     q: "What's the refund and substitution policy?",

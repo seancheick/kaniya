@@ -1,41 +1,19 @@
-import { boxes, type Box } from "@/lib/box";
-import { WaitlistForm } from "@/components/waitlist-form";
+import Image from "next/image";
+import { boxes, sharedPantryNotes, type Box } from "@/lib/box";
 import { MatchQuiz } from "@/components/quiz/match-quiz";
+import { BuyButton } from "@/components/buy-button";
 import { site } from "@/lib/site";
 
-const tintClasses: Record<Box["tint"], string> = {
-  blush: "bg-blush",
-  sage: "bg-sage/25",
-  cream: "bg-cream-deep",
-};
-
-const chipSpots = ["left-6 top-6", "right-8 top-1/3", "left-10 bottom-8"];
-
-function BoxPhotoPlaceholder({ box }: { box: Box }) {
+function BoxPhoto({ box }: { box: Box }) {
   return (
-    <div
-      className={`relative aspect-[4/3] w-full overflow-hidden rounded-3xl ${tintClasses[box.tint]}`}
-      role="img"
-      aria-label={`${box.name} — product photography placeholder`}
-    >
-      {chipSpots.map((spot, i) => (
-        <span
-          key={spot}
-          className={`absolute ${spot} rounded-full border border-border bg-cream-card px-3.5 py-1.5 text-xs font-medium text-ink`}
-        >
-          {box.sample[i]}
-        </span>
-      ))}
-      <div className="absolute inset-0 grid place-items-center">
-        <div className="rounded-2xl border border-dashed border-ink-soft/30 bg-cream/70 px-6 py-4 text-center backdrop-blur-sm">
-          <p className="font-display text-lg text-ink">
-            Keniya<span className="text-terracotta">.</span>
-          </p>
-          <p className="mt-1 text-xs text-ink-soft">
-            Box photography — first prototype run
-          </p>
-        </div>
-      </div>
+    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-cream-deep">
+      <Image
+        src={box.image}
+        alt={box.imageAlt}
+        fill
+        sizes="(max-width: 1024px) 100vw, 50vw"
+        className="object-cover"
+      />
       <span className="absolute bottom-4 right-4 rounded-full bg-sage-deep px-3 py-1.5 text-[0.65rem] font-medium tracking-[0.14em] text-cream">
         SUMMER &rsquo;26 EDIT
       </span>
@@ -48,7 +26,7 @@ export function OurBoxes() {
     <section id="boxes" className="border-b border-border">
       <div className="mx-auto max-w-6xl px-6 py-16 lg:py-24">
         <p className="eyebrow" data-reveal>
-          Our boxes
+          Our boxes — all three open for preorder
         </p>
         <h2 className="font-display text-headline mt-4 max-w-[24ch] text-ink" data-reveal>
           Three boxes. <em className="text-terracotta-deep">One standard.</em>
@@ -57,25 +35,29 @@ export function OurBoxes() {
           Every box: fourteen real snacks across five categories, and one
           &ldquo;Packed for You&rdquo; guide explaining why each one made the cut. Only{" "}
           {site.firstRunPerBox} of each box in the founding release. Same care, different
-          life moments.
+          life moments — preorder any (or gift more than one).
         </p>
         <p className="mt-3 max-w-[54ch] text-sm text-ink-soft/80" data-reveal>
           Honest counting, always: a pack of chews or a pair of tea bags counts as one
-          snack — never four. At least eight are substantial single servings. And boxes
-          are never frozen in time — snacks rotate with the seasons, your feedback, and
-          new clean-ingredient finds, while the categories and the standard stay put.
+          snack — never four. At least eight are substantial single servings.{" "}
+          {site.freeShippingLabel} on every founding box. Boxes rotate with the seasons
+          while categories and standards stay put.
+        </p>
+        <p className="mt-3 max-w-[54ch] text-sm text-ink-soft/80" data-reveal>
+          {sharedPantryNotes[0]}
         </p>
 
         <div className="mt-14 space-y-16 lg:space-y-24">
           {boxes.map((box, i) => (
             <article
               key={box.slug}
+              id={`box-${box.slug}`}
               data-reveal
-              className={`grid items-center gap-8 lg:grid-cols-2 lg:gap-14 ${
+              className={`scroll-mt-28 grid items-center gap-8 lg:grid-cols-2 lg:gap-14 ${
                 i % 2 ? "lg:[&>*:first-child]:order-2" : ""
               }`}
             >
-              <BoxPhotoPlaceholder box={box} />
+              <BoxPhoto box={box} />
               <div>
                 <h3 className="font-display text-3xl text-ink">{box.name}</h3>
                 <p className="mt-2 text-sm font-medium text-sage-deep">{box.forWho}</p>
@@ -94,23 +76,14 @@ export function OurBoxes() {
                   Inside: {box.sample.join(", ").toLowerCase()} + 9 more.
                 </p>
                 <p className="mt-5 font-display text-lg text-ink">
-                  ${site.preorderPriceUSD} · {site.snackCount} snacks ·{" "}
+                  ${site.preorderPriceUSD} · {site.snackCount} snacks · {site.freeShippingLabel}{" "}
+                  ·{" "}
                   <span className="text-terracotta-deep">
                     Only {site.firstRunPerBox} in the founding release
                   </span>
                 </p>
-                <div className="mt-4">
-                  <WaitlistForm
-                    boxInterest={box.slug}
-                    source="our_boxes"
-                    cta="Reserve yours"
-                    compact
-                  />
-                  <p className="mt-2 text-xs text-ink-soft/80">
-                    Checkout opens this week — your email holds one of the{" "}
-                    {site.firstRunPerBox}. One-time purchase, refundable any time before
-                    shipping. No subscription, no hidden renewal.
-                  </p>
+                <div className="mt-5">
+                  <BuyButton box={box} />
                 </div>
               </div>
             </article>
@@ -118,13 +91,14 @@ export function OurBoxes() {
         </div>
 
         <p className="mt-14 border-t border-border pt-6 text-sm text-ink-soft" data-reveal>
-          In development: GLP-1 Companion · Menopause Comfort · Postpartum Recovery.{" "}
+          In development (waitlist via quiz): GLP-1 Companion · Menopause Comfort ·
+          Postpartum Recovery.{" "}
           <MatchQuiz>
             <button
               type="button"
               className="font-medium text-sage-deep transition-colors hover:text-ink"
             >
-              The quiz records which one you need →
+              Tell us which you need →
             </button>
           </MatchQuiz>
         </p>

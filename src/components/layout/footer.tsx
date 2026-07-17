@@ -3,7 +3,7 @@ import { site } from "@/lib/site";
 export function Footer() {
   return (
     <footer className="border-t border-border bg-cream-deep/70">
-      <div className="mx-auto max-w-6xl px-6 py-14">
+      <div className="mx-auto max-w-6xl px-6 py-14 pb-28 md:pb-14">
         <p className="font-display text-headline max-w-[22ch] text-ink">
           Someone thought this through for you.
         </p>
@@ -14,7 +14,16 @@ export function Footer() {
             </p>
             <p className="mt-2 max-w-[44ch] text-sm text-ink-soft">
               How we write <em>kɛnɛya</em> — &ldquo;health&rdquo; in Dioula. Curated
-              with PharmaGuide ingredient intelligence.
+              with{" "}
+              <a
+                href={site.pharmaguide.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-sage-deep underline-offset-2 hover:underline"
+              >
+                PharmaGuide
+              </a>{" "}
+              ingredient intelligence.
             </p>
           </div>
           <nav
@@ -23,6 +32,17 @@ export function Footer() {
           >
             <a className="transition-colors hover:text-ink" href="/about">
               Our story
+            </a>
+            <a className="transition-colors hover:text-ink" href="/#pharmaguide">
+              How we pick
+            </a>
+            <a
+              className="transition-colors hover:text-ink"
+              href={site.pharmaguide.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PharmaGuide
             </a>
             <a className="transition-colors hover:text-ink" href="/#faq">
               FAQ
@@ -48,7 +68,10 @@ export function Footer() {
           labels for allergens.
         </p>
         <p className="mt-6 text-xs text-ink-soft/70">
-          © 2026 Keniya. All rights reserved.
+          © 2026 Keniya. All rights reserved. · Free shipping on founding preorders ·{" "}
+          <a href={site.url} className="hover:text-ink">
+            keniyahealth.com
+          </a>
         </p>
       </div>
     </footer>

@@ -90,6 +90,9 @@ export type Box = {
   principles: string[];
   sample: string[];
   tint: "blush" | "sage" | "cream";
+  /** Product photography under /public */
+  image: string;
+  imageAlt: string;
 };
 
 export const boxes: Box[] = [
@@ -113,6 +116,8 @@ export const boxes: Box[] = [
       "Dark chocolate almonds",
     ],
     tint: "blush",
+    image: "/images/box-pregnancy.jpg",
+    imageAlt: "Keniya Pregnancy Comfort Box with Packed for You guide",
   },
   {
     slug: "blood_sugar",
@@ -134,6 +139,8 @@ export const boxes: Box[] = [
       "Sea-salt popcorn",
     ],
     tint: "sage",
+    image: "/images/box-blood-sugar.jpg",
+    imageAlt: "Keniya Balanced Blood Sugar Box with Packed for You guide",
   },
   {
     slug: "heart",
@@ -155,5 +162,13 @@ export const boxes: Box[] = [
       "Dried apricots",
     ],
     tint: "cream",
+    image: "/images/box-heart.jpg",
+    imageAlt: "Keniya Heart Wellness Box with Packed for You guide",
   },
+];
+
+/** Snacks that can appear across more than one box (shared pantry + condition accents). */
+export const sharedPantryNotes = [
+  "Roasted chickpeas, sea-salt popcorn, and freeze-dried fruit show up in more than one edit — same clean-ingredient bar, different box story.",
+  "Protein-smart and hydration picks recur; the “why” and the rest of the lineup shift with the life moment.",
 ];

@@ -14,13 +14,19 @@ export const env = {
     return req("SUPABASE_SERVICE_ROLE_KEY");
   },
   get STRIPE_SECRET_KEY() {
-    return req("STRIPE_SECRET_KEY");
+    return process.env.STRIPE_SECRET_KEY ?? "";
   },
   get STRIPE_WEBHOOK_SECRET() {
-    return req("STRIPE_WEBHOOK_SECRET");
+    return process.env.STRIPE_WEBHOOK_SECRET ?? "";
   },
   get STRIPE_PRICE_PREGNANCY_BOX() {
-    return req("STRIPE_PRICE_PREGNANCY_BOX");
+    return process.env.STRIPE_PRICE_PREGNANCY_BOX ?? "";
+  },
+  get STRIPE_PRICE_BLOOD_SUGAR_BOX() {
+    return process.env.STRIPE_PRICE_BLOOD_SUGAR_BOX ?? "";
+  },
+  get STRIPE_PRICE_HEART_BOX() {
+    return process.env.STRIPE_PRICE_HEART_BOX ?? "";
   },
   get RESEND_API_KEY() {
     return req("RESEND_API_KEY");

@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { supabase } from "@/lib/supabase";
+import { sendWaitlistConfirmEmail } from "@/lib/resend";
 
 const waitlistSchema = z.object({
   email: z.email().max(255),
@@ -22,8 +23,9 @@ export async function joinWaitlist(
     return { ok: false, message: "That email doesn't look right — mind checking it?" };
   }
   const d = parsed.data;
+  const email = d.email.trim().toLowerCase();
   const { error } = await supabase.from("waitlist").insert({
-    email: d.email.trim().toLowerCase(),
+    email,
     box_interest: d.boxInterest,
     source: d.source,
     quiz_who: d.quizWho ?? null,
@@ -37,7 +39,19 @@ export async function joinWaitlist(
     console.error("waitlist insert failed", error.code, error.message);
     return { ok: false, message: "Something hiccuped — try again in a second." };
   }
-  return { ok: true, message: "You're on the list — you'll hear from us first." };
+
+  // Email is best-effort — never fail the waitlist join if Resend hiccups
+  const mail = await sendWaitlistConfirmEmail({
+    to: email,
+    boxInterest: d.boxInterest,
+    quizWho: d.quizWho,
+    quizCraving: d.quizCraving,
+  });
+  if (!mail.ok) {
+    console.error("waitlist confirm email skipped/failed", mail.error);
+  }
+
+  return { ok: true, message: "You're on the list — check your inbox for a confirmation." };
 }
 
 // Voting moved to social media — the votes table stays in Supabase for later

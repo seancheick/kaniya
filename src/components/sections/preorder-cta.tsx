@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { MatchQuiz } from "@/components/quiz/match-quiz";
-import { WaitlistForm } from "@/components/waitlist-form";
+import { BuyButton } from "@/components/buy-button";
 import { boxes } from "@/lib/box";
 import { site } from "@/lib/site";
 
@@ -14,7 +14,7 @@ export function PreorderCta() {
     <section id="preorder" className="border-t border-border bg-blush/40">
       <div className="mx-auto max-w-6xl px-6 py-20 lg:py-28">
         <p className="eyebrow" data-reveal>
-          Reserve your box
+          Preorder now
         </p>
         <h2 className="font-display text-display mt-5 max-w-[18ch] text-ink" data-reveal>
           Only {site.firstRunPerBox} of each box.{" "}
@@ -22,9 +22,9 @@ export function PreorderCta() {
         </h2>
         <p className="mt-6 max-w-[54ch] text-lg leading-relaxed text-ink-soft" data-reveal>
           ${site.preorderPriceUSD} · {site.snackCount} snacks · one-time purchase, no
-          subscription · estimated ship window {site.shipWindow} · US addresses ·
-          refundable any time before it ships. Checkout opens on this page within days —
-          your email holds one of the {site.firstRunPerBox} today.
+          subscription · {site.freeShippingLabel} · estimated ship window {site.shipWindow} ·
+          US addresses · refundable any time before it ships.{" "}
+          {site.foundingHolders}+ people already holding founding spots.
         </p>
         <div className="mt-8" data-reveal>
           <div className="flex flex-wrap gap-2">
@@ -45,12 +45,7 @@ export function PreorderCta() {
             ))}
           </div>
           <div className="mt-5">
-            <WaitlistForm
-              key={selected.slug}
-              boxInterest={selected.slug}
-              source="final_cta"
-              cta="Reserve yours"
-            />
+            <BuyButton key={selected.slug} box={selected} />
           </div>
           <div className="mt-5">
             <MatchQuiz>

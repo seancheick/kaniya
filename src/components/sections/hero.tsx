@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -80,7 +81,7 @@ export function Hero() {
 
   return (
     <section ref={scope} className="overflow-hidden">
-      <div className="mx-auto grid max-w-6xl gap-16 px-6 pb-24 pt-14 sm:pt-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:pb-32 lg:pt-24">
+      <div className="mx-auto grid max-w-6xl gap-16 px-6 pb-16 pt-14 sm:pt-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:pb-24 lg:pt-24">
         <div>
           <p className="hero-eyebrow eyebrow">Snack boxes with a why</p>
           <h1 className="hero-title font-display text-display mt-5 text-ink">
@@ -93,7 +94,7 @@ export function Hero() {
           </p>
           <div className="hero-actions mt-9 flex flex-wrap items-center gap-6">
             <Button asChild size="lg" className="rounded-full px-7 text-base">
-              <a href="#boxes">Shop the first boxes</a>
+              <a href="#boxes">Preorder a founding box — ${site.preorderPriceUSD}</a>
             </Button>
             <MatchQuiz>
               <button
@@ -105,34 +106,30 @@ export function Hero() {
             </MatchQuiz>
           </div>
           <p className="hero-meta mt-6 text-sm text-ink-soft/80">
-            Founding release — only {site.firstRunPerBox} of each box ·{" "}
-            ${site.preorderPriceUSD} · Ships {site.shipWindow} (est.)
+            Founding release — only {site.firstRunPerBox} of each · ${site.preorderPriceUSD} ·{" "}
+            {site.freeShippingLabel} · Ships {site.shipWindow} (est.) ·{" "}
+            {site.foundingHolders}+ holding spots
           </p>
         </div>
 
         <div className="hero-visual relative mx-auto w-full max-w-md lg:max-w-none">
-          <div className="relative mx-auto aspect-[4/5] max-w-md rounded-[1.75rem] bg-blush p-6">
+          <div className="relative mx-auto aspect-[4/5] max-w-md overflow-hidden rounded-[1.75rem] bg-blush shadow-sm">
+            <Image
+              src="/images/hero-unboxing.jpg"
+              alt="Keniya founding snack box unboxing with Packed for You guide"
+              fill
+              priority
+              sizes="(max-width: 768px) 90vw, 480px"
+              className="object-cover"
+            />
             <div
               data-speed="0.7"
-              className="absolute right-6 top-6 grid size-24 place-items-center rounded-full border border-blush-ink/25 text-center"
+              className="absolute right-4 top-4 grid size-24 place-items-center rounded-full border border-blush-ink/25 bg-cream/90 text-center backdrop-blur-sm"
             >
               <p className="text-[0.65rem] font-medium leading-tight tracking-[0.14em] text-blush-ink">
                 14 SNACKS
                 <br />· ${site.preorderPriceUSD} ·
               </p>
-            </div>
-            <div className="flex h-full flex-col justify-end" data-speed="0.4">
-              <div className="-rotate-3 rounded-2xl border border-border bg-cream-card p-6">
-                <p className="eyebrow">Why it&rsquo;s in your box</p>
-                <p className="font-display mt-3 text-xl text-ink">Ginger chews</p>
-                <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                  So many women keep ginger close through the early weeks — warm,
-                  familiar, and easy to keep on the nightstand.
-                </p>
-                <p className="mt-4 text-xs tracking-[0.18em] text-blush-ink">
-                  From your guide · 03 of 14
-                </p>
-              </div>
             </div>
           </div>
           {chips.map((chip) => (

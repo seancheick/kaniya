@@ -11,6 +11,9 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { WaitlistForm } from "@/components/waitlist-form";
+import { BuyButton } from "@/components/buy-button";
+import { boxes } from "@/lib/box";
+import { site } from "@/lib/site";
 
 const WHO_OPTIONS = [
   "Pregnancy",
@@ -306,22 +309,53 @@ export function MatchQuiz({ children }: { children: ReactNode }) {
               </DialogDescription>
             </DialogHeader>
             <div className="pt-5">
-              <WaitlistForm
-                boxInterest={result.boxInterest}
-                source="quiz"
-                cta={result.status === "preorder" ? "Reserve yours" : "Get first access"}
-                quiz={{
-                  quizWho: condition ?? undefined,
-                  quizAllergies: allergies,
-                  quizCraving: craving ?? undefined,
-                }}
-                compact
-              />
+              {result.status === "preorder" ? (
+                <>
+                  {(() => {
+                    const matched = boxes.find((b) => b.slug === result.boxInterest);
+                    return matched ? (
+                      <BuyButton
+                        box={matched}
+                        size="default"
+                        label={`Preorder ${matched.shortName} — $${site.preorderPriceUSD}`}
+                      />
+                    ) : null;
+                  })()}
+                  <p className="mt-4 text-xs text-ink-soft">
+                    Want us to note allergies before pack day? Drop your email too:
+                  </p>
+                  <div className="mt-2">
+                    <WaitlistForm
+                      boxInterest={result.boxInterest}
+                      source="quiz"
+                      cta="Save preferences"
+                      quiz={{
+                        quizWho: condition ?? undefined,
+                        quizAllergies: allergies,
+                        quizCraving: craving ?? undefined,
+                      }}
+                      compact
+                    />
+                  </div>
+                </>
+              ) : (
+                <WaitlistForm
+                  boxInterest={result.boxInterest}
+                  source="quiz"
+                  cta="Get first access"
+                  quiz={{
+                    quizWho: condition ?? undefined,
+                    quizAllergies: allergies,
+                    quizCraving: craving ?? undefined,
+                  }}
+                  compact
+                />
+              )}
             </div>
             <div className="flex items-center justify-between pt-4">
               <p className="text-xs text-ink-soft/70">
                 {result.status === "preorder"
-                  ? `$47 · 14 snacks · only 50 in the founding release · checkout opens this week.`
+                  ? `$${site.preorderPriceUSD} · ${site.snackCount} snacks · free shipping · only ${site.firstRunPerBox} in the founding release.`
                   : "We build the next box where the need is loudest."}
               </p>
               <button

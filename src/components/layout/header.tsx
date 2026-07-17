@@ -5,7 +5,7 @@ import { site } from "@/lib/site";
 const nav = [
   { href: "/#boxes", label: "The boxes" },
   { href: "/#inside", label: "What's inside" },
-  { href: "/#vote", label: "Vote" },
+  { href: "/#pharmaguide", label: "How we pick" },
   { href: "/about", label: "Our story" },
 ];
 
@@ -31,7 +31,7 @@ export function Header() {
           ))}
         </nav>
         <Button asChild className="rounded-full px-5">
-          <a href="/#boxes">Shop boxes — ${site.preorderPriceUSD}</a>
+          <a href="/#preorder">Preorder — ${site.preorderPriceUSD}</a>
         </Button>
       </div>
     </header>

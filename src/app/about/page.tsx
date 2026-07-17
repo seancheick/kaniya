@@ -42,10 +42,23 @@ export default function AboutPage() {
           marketing.
         </p>
         <p data-reveal>
-          We&rsquo;re starting small on purpose — fifty boxes, packed by hand at our
-          kitchen table, allergy swaps done one box at a time. The Pregnancy Comfort Box
-          ships first. Balanced Blood Sugar and Heart Wellness are next, and the waitlists
-          decide the order. This is a family company; it will grow at the speed of trust.
+          We&rsquo;re starting small on purpose — fifty of each box, packed by hand,
+          allergy swaps done one box at a time. All three founding edits open together:
+          Pregnancy Comfort, Balanced Blood Sugar, and Heart Wellness. This is a family
+          company; it will grow at the speed of trust.
+        </p>
+        <p data-reveal>
+          By day I build{" "}
+          <a
+            href="https://pharmaguide.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-sage-deep underline-offset-2 hover:underline"
+          >
+            PharmaGuide
+          </a>
+          — supplement and ingredient intelligence. Keniya is that care made edible and
+          giftable.
         </p>
       </div>
 
@@ -55,7 +68,16 @@ export default function AboutPage() {
           <span className="text-terracotta">.</span>
         </p>
         <p className="mt-2 text-sm text-ink-soft">
-          Co-founders, Keniya · Curated with PharmaGuide ingredient intelligence
+          Co-founders, Keniya ·{" "}
+          <a
+            href="https://pharmaguide.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sage-deep underline-offset-2 hover:underline"
+          >
+            PharmaGuide
+          </a>{" "}
+          ingredient intelligence
         </p>
       </div>
     </div>

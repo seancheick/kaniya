@@ -44,11 +44,21 @@ export function WhyCards() {
             have the energy to do, done and documented.
           </p>
           <p className="mt-6 text-sm text-sage-deep" data-reveal>
-            Curated with PharmaGuide ingredient intelligence.
+            Curated with{" "}
+            <a
+              href="https://pharmaguide.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium underline-offset-2 hover:underline"
+            >
+              PharmaGuide
+            </a>{" "}
+            ingredient intelligence.
           </p>
           <p className="mt-2 max-w-[52ch] text-xs leading-relaxed text-ink-soft/70" data-reveal>
             PharmaGuide supports our label review — ingredients, allergens, caffeine,
             added sugars, sodium. It doesn&rsquo;t replace individualized medical advice.
+            Explore the full platform at pharmaguide.io.
           </p>
         </div>
       </div>
